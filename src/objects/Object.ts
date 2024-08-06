@@ -2,10 +2,20 @@ import { Assets, Sprite, Texture } from "pixijs";
 import Room from "../rooms/Room";
 
 export default class Object {
+  static globalSprite = new Sprite();
+  id = "none"
   texturesSrcs: string[] = [];
   textures: Texture[] = [];
-  sprite: Sprite | undefined = undefined;
+  sprite: Sprite = Object.globalSprite;
   room: Room| undefined = undefined;
+  _textureId = 0;
+  get textureId() {
+    return this._textureId;
+  }
+  set textureId(id) {
+    this._textureId = id;
+    this.sprite.texture = this.textures[id];
+  }
   _x = 0;
   _y = 0;
 
@@ -19,16 +29,12 @@ export default class Object {
 
   set x(x) {
     this._x = x;
-    if (this.sprite) {
-      this.sprite.x = x;
-    }
+    this.sprite.x = x;
   }
 
   set y(y) {
     this._y = y;
-    if (this.sprite) {
-      this.sprite.y = y;
-    }
+    this.sprite.y = y;
   }
 
   onInit(){
@@ -40,13 +46,11 @@ export default class Object {
     );
     const texture = this.textures[0];
     this.sprite = new Sprite(texture);
-    this.sprite.anchor.set(0.5, 0.5);
     this.sprite.x = this._x;
     this.sprite.y = this._y;
     this.sprite.width = texture.width;
     this.sprite.height = texture.height;
     console.log(texture.width, texture.height)
-
     this.room = room
     this.onInit()
   }
