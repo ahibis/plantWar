@@ -13,5 +13,6 @@ const texture = await Assets.load('background/background1.png');
 
 const background = new Sprite(texture);
 
+
 // Add the bunny to the scene we are building
 app.stage.addChild(background);
