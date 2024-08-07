@@ -1,10 +1,16 @@
 import Object from "../Object";
 
 export default class Background extends Object {
+  textures = {
+    base: {
+      src: "background.png",
+    },
+  };
+  texturePath = "/ui/background/";
   onInit(): void {
-    if(this.sprite){
+    this.chosenTexture = "base";
+    if (this.sprite) {
       this.sprite.zIndex = -10;
-      console.log(this.sprite)
     }
   }
   texturesSrcs = ["/ui/background/background.png"];

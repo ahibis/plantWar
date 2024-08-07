@@ -1,26 +1,35 @@
-import PlantPicker  from '@/objects/battlefield/plantPicker/PlantPicker';
+import PlantPicker from "@/objects/battlefield/plantPicker/PlantPicker";
 import Object from "@/objects/Object";
 
 export default class Slot extends Object {
-  id = "slot"
-  texturesSrcs = ["/ui/slot/slot.png", "/ui/slot/slotActivated.png"];
+  id = "slot";
+  textures = {
+    base: {
+      src: "slot.png",
+    },
+    activated: {
+      src: "slotActivated.png",
+    },
+  };
+  texturePath = "/ui/slot/";
   slotId = 0;
   plantPicker: PlantPicker;
-  
-  onUpdate(){
-    if(this.slotId == this.plantPicker.slotActivatedId){
-      return this.textureId = 1;
+
+  onUpdate() {
+    if (this.slotId == this.plantPicker.slotActivatedId) {
+      return (this.chosenTexture = "activated");
     }
-    this.textureId = 0;
+    this.chosenTexture = "base";
   }
   onInit(): void {
-    const {sprite, plantPicker} = this;
+    this.chosenTexture = "base";
+    const { sprite, plantPicker } = this;
 
     sprite.zIndex = 0;
     sprite.interactive = true;
     sprite.onclick = () => plantPicker.chooseSlot(this.slotId);
   }
-  constructor(plantPicker: PlantPicker, x =0, y=0){
+  constructor(plantPicker: PlantPicker, x = 0, y = 0) {
     super(x, y);
     plantPicker.slots.push(this);
     this.plantPicker = plantPicker;

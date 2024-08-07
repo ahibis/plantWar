@@ -1,68 +1,112 @@
-import { Assets, Sprite, Texture } from "pixi.js";
+import { AnimatedSprite, Assets, Sprite, Texture } from "pixi.js";
 import Room from "../rooms/Room";
 
+type TextureObj = {
+  path?: string;
+  src?: string;
+  srcs?: string[];
+};
+type Textures = {
+  [key: string]: TextureObj;
+};
 export default class Object {
   static globalSprite = new Sprite();
-  id = "none"
-  texturePath = "";
-  texturesSrcs: string[] = [];
-  textures: Texture[] = [];
-  sprite: Sprite = Object.globalSprite;
-  room: Room| undefined = undefined;
-  _textureId = 0;
+  sprite: Sprite | AnimatedSprite = Object.globalSprite;
+  animated = false;
+  room: Room | undefined = undefined;
   _updatable = false;
-  _x = 0;
-  _y = 0;
-  get updatable () {
-    return this._updatable
+  id = "none";
+  textures: Textures = {};
+  texturePath = "";
+  _chosenTexture = "";
+  get chosenTexture() {
+    return this._chosenTexture;
   }
-  set updatable (value: boolean) {
-    if (value == this._updatable) return;
-    console.log(this.room)
-    if(!this.room) return;
-    this._updatable = value
-    if (value === true) {
-      this.room.registerUpdatableObject(this)
+  get animatedSprite() {
+    return this.sprite as AnimatedSprite;
+  }
+  async getTexture(texture: string) {
+    const textureObj = this.textures[texture];
+    if (!textureObj) return;
+    const localPath = textureObj.path || "";
+    return (await Assets.load(
+      this.texturePath + localPath + textureObj.src
+    )) as Texture;
+  }
+  async getTextures(texture: string) {
+    const textureObj = this.textures[texture];
+    if (!textureObj) return [];
+    const localPath = textureObj.path || "";
+    if (!textureObj.srcs) return [];
+    return (await Promise.all(
+      textureObj.srcs.map((src) =>
+        Assets.load(this.texturePath + localPath + src)
+      )
+    )) as Texture[];
+  }
+  async setChosenTexture(texture: string) {
+    if (this.chosenTexture == texture) return;
+    this._chosenTexture = texture;
+
+    if (this.animated) {
+      const sprite = this.sprite as AnimatedSprite;
+      sprite.textures = await this.getTextures(texture);
+      console.log(sprite);
+      // sprite.play();
       return;
     }
-    this.room.removeUpdatableObject(this)
+    const textureOne = await this.getTexture(texture);
+    if (textureOne) {
+      this.sprite.texture = textureOne;
+    }
   }
-  onUpdate(){}
+  set chosenTexture(texture: string) {
+    this.setChosenTexture(texture);
+  }
 
-  async addObject(object: Object){
-    if(!this.room) return;
+  get updatable() {
+    return this._updatable;
+  }
+  set updatable(value: boolean) {
+    if (value == this._updatable) return;
+    if (!this.room) return;
+    this._updatable = value;
+    if (value === true) {
+      this.room.registerUpdatableObject(this);
+      return;
+    }
+    this.room.removeUpdatableObject(this);
+  }
+  onUpdate() {}
+
+  async addObject(object: Object) {
+    if (!this.room) return;
     await object.register(this.room);
-    if(!object.sprite) return;
+    if (!object.sprite) return;
     this.sprite.addChild(object.sprite);
   }
 
-  get textureId() {
-    return this._textureId;
-  }
-  set textureId(id) {
-    this._textureId = id;
-    this.sprite.texture = this.textures[id];
-  }
+  onInit() {}
+  beforeInit() {}
+  _x = 0;
+  _y = 0;
 
-  onInit(){
-
-  }
   async register(room: Room) {
-    this.textures = await Promise.all(
-      this.texturesSrcs.map((src) => Assets.load(this.texturePath+src))
-    );
-    const texture = this.textures[0];
-    this.sprite = new Sprite(texture);
+    this.room = room;
+    await this.beforeInit();
+    if (this.animated) {
+      this.sprite = new AnimatedSprite(
+        await this.getTextures(this.chosenTexture)
+      );
+    } else {
+      this.sprite = new Sprite();
+    }
     this.sprite.x = this._x;
     this.sprite.y = this._y;
-    this.sprite.width = texture.width;
-    this.sprite.height = texture.height;
-    console.log(texture.width, texture.height)
-    this.room = room
-    this.onInit()
+    this.onInit();
   }
 
-  constructor(x=0, y=0) {
+  constructor(x = 0, y = 0) {
     this._x = x;
     this._y = y;
   }

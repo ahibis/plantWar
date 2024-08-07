@@ -1,21 +1,18 @@
-import Object from "../Object";
+import GameObject from "../Object";
+import ZombieData from "./Zombie.json";
 
-export default class Zombie extends Object {
-  id = "zombie";
-  texturePath = "/enemies/zombie/";
-  texturesSrcs = [
-    "zombie0.png",
-    "zombie1.png",
-    "zombie2.png",
-    "zombie3.png",
-    "zombie4.png",
-    "zombie5.png",
-  ];
-  onInit(): void {
+export default class Zombie extends GameObject {
+  animated = true;
+  beforeInit(){
+    Object.assign(this, ZombieData);
     this.updatable = true;
   }
-  onUpdate(): void {
+  async onInit(){
+    await this.setChosenTexture("attack");
+    this.animatedSprite.play();
+    this.animatedSprite.animationSpeed = 0.1;
+  }
+  onUpdate(){
     this.sprite.x -= 0.5;
   }
-  
 }
