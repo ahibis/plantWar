@@ -1,4 +1,4 @@
-import { Application, Container } from 'pixijs';
+import { Application, Container } from 'pixi.js';
 import Object from '../objects/Object';
 export default class Room{
   app: Application;
@@ -27,7 +27,7 @@ export default class Room{
     this.container.sortableChildren = true;
     this.app.stage.addChild(this.container);
     this.app.ticker.deltaMS = 1000 / 60;
-    this.app.ticker.add((delta) => {
+    this.app.ticker.add(() => {
       // console.log(this.updatableObjects)
 
       this.updatableObjects.forEach((object) => {

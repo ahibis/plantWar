@@ -1,4 +1,4 @@
-import { Assets, Sprite, Texture } from "pixijs";
+import { Assets, Sprite, Texture } from "pixi.js";
 import Room from "../rooms/Room";
 
 export default class Object {

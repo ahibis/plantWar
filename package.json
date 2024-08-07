@@ -3,16 +3,19 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "main": "./src/main.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "tsc": "^2.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
   },
   "dependencies": {
-    "pixijs": "^7.1.4"
+    "pixi.js": "^8.3.1"
   }
 }

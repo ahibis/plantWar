@@ -1,5 +1,4 @@
 import PlantPicker  from '@/objects/battlefield/plantPicker/PlantPicker';
-import Battlefield from "@/rooms/Battlefield";
 import Object from "@/objects/Object";
 
 export default class Slot extends Object {

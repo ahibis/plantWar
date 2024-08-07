@@ -1,4 +1,4 @@
-import { Application } from 'pixijs';
+import { Application } from 'pixi.js';
 import Room from "./Room";
 import Background from '@/objects/battlefield/Background';
 import Slot from '@/objects/battlefield/plantPicker/Slot';
