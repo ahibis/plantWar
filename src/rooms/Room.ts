@@ -1,5 +1,6 @@
 import { Application, Container } from "pixi.js";
 import Object from "../objects/Object";
+import ObjectGroup from "@/objects/ObjectGroup";
 export default class Room {
   app: Application;
   objects: Object[] = [];
@@ -18,6 +19,9 @@ export default class Room {
     await object.register(this);
     this.objects.push(object);
     this.container.addChild(object.sprite);
+  }
+  addObjectGroup(objectGroup: ObjectGroup) {
+    this.container.addChild(objectGroup.container);
   }
 
   constructor(app: Application) {

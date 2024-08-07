@@ -10,8 +10,10 @@ export default class ObjectGroup{
     this.objects.push(object);
     this.container.addChild(object.sprite);
   }
-  constructor(room: Room){
+  constructor(room: Room, x=0, y=0){
     this.room = room;
     this.container.sortableChildren = true;
+    this.container.x = x;
+    this.container.y = y;
   }
 }
