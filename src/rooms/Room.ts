@@ -4,6 +4,14 @@ export default class Room{
   app: Application;
   objects: Object[] = [];
   container = new Container();
+  updatableObjects: Object[] = [];
+  registerUpdatableObject(object: Object){
+    this.updatableObjects.push(object);
+  }
+  removeUpdatableObject(object: Object){
+    const index = this.updatableObjects.indexOf(object);
+    if(index !== -1) this.updatableObjects.splice(index, 1);
+  }
   async addObject(object: Object){
     await object.register(this);
     this.objects.push(object);
@@ -16,5 +24,11 @@ export default class Room{
     this.app = app;
     this.container.sortableChildren = true;
     this.app.stage.addChild(this.container);
+    this.app.ticker.deltaMS = 1000 / 60;
+    this.app.ticker.add((delta) => {
+      this.updatableObjects.forEach((object) => {
+        object.onUpdate();
+      })
+    })
   }
 }

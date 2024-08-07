@@ -9,6 +9,24 @@ export default class Object {
   sprite: Sprite = Object.globalSprite;
   room: Room| undefined = undefined;
   _textureId = 0;
+  _updatable = false;
+  get updatable () {
+    return this._updatable
+  }
+  set updatable (value: boolean) {
+    if (value == this._updatable) return;
+    if(!this.room) return;
+    this._updatable = value
+    if (value === true) {
+      this.room.registerUpdatableObject(this)
+    }
+    this.room.removeUpdatableObject(this)
+  }
+  onUpdate(){
+
+  }
+
+
   get textureId() {
     return this._textureId;
   }
