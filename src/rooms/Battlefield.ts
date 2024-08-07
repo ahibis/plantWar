@@ -1,8 +1,8 @@
 import { Application } from 'pixijs';
 import Room from "./Room";
-import Background from '@/objects/battlefield/background';
-import Slot from '@/objects/battlefield/plantPicker/slot';
-import PlantPicker from '@/objects/battlefield/plantPicker/plantPicker';
+import Background from '@/objects/battlefield/Background';
+import Slot from '@/objects/battlefield/plantPicker/Slot';
+import PlantPicker from '@/objects/battlefield/plantPicker/PlantPicker';
 
 export default class Battlefield extends Room{
   

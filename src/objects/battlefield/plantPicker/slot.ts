@@ -1,4 +1,4 @@
-import PlantPicker  from '@/objects/battlefield/plantPicker/plantPicker';
+import PlantPicker  from '@/objects/battlefield/plantPicker/PlantPicker';
 import Battlefield from "@/rooms/Battlefield";
 import Object from "@/objects/Object";
 

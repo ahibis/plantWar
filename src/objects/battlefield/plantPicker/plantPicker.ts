@@ -1,4 +1,4 @@
-import Slot from "./slot";
+import Slot from "./Slot";
 
 export default class PlantPicker{
   slots: Slot[] = []
