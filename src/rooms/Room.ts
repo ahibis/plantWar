@@ -7,7 +7,7 @@ export default class Room{
   updatableObjects: Object[] = [];
   registerUpdatableObject(object: Object){
     console.log(object,1)
-    this.updatableObjects = [...this.updatableObjects, object];
+    this.updatableObjects.push(object);
     console.log(this)
   }
   removeUpdatableObject(object: Object){

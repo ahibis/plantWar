@@ -12,5 +12,7 @@
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pixijs": "^7.1.4"
+  }
 }

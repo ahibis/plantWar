@@ -13,15 +13,16 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    // "moduleResolution": "node",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
+    "baseUrl": "./src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     }
   },
   "include": ["src"],
