@@ -27,8 +27,13 @@ export default class Object {
     }
     this.room.removeUpdatableObject(this)
   }
-  onUpdate(){
+  onUpdate(){}
 
+  async addObject(object: Object){
+    if(!this.room) return;
+    await object.register(this.room);
+    if(!object.sprite) return;
+    this.sprite.addChild(object.sprite);
   }
 
   get textureId() {
