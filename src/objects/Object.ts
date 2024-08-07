@@ -4,28 +4,32 @@ import Room from "../rooms/Room";
 export default class Object {
   static globalSprite = new Sprite();
   id = "none"
+  texturePath = "";
   texturesSrcs: string[] = [];
   textures: Texture[] = [];
   sprite: Sprite = Object.globalSprite;
   room: Room| undefined = undefined;
   _textureId = 0;
   _updatable = false;
+  _x = 0;
+  _y = 0;
   get updatable () {
     return this._updatable
   }
   set updatable (value: boolean) {
     if (value == this._updatable) return;
+    console.log(this.room)
     if(!this.room) return;
     this._updatable = value
     if (value === true) {
       this.room.registerUpdatableObject(this)
+      return;
     }
     this.room.removeUpdatableObject(this)
   }
   onUpdate(){
 
   }
-
 
   get textureId() {
     return this._textureId;
@@ -34,33 +38,13 @@ export default class Object {
     this._textureId = id;
     this.sprite.texture = this.textures[id];
   }
-  _x = 0;
-  _y = 0;
-
-  get x() {
-    return this._x;
-  }
-
-  get y() {
-    return this._y;
-  }
-
-  set x(x) {
-    this._x = x;
-    this.sprite.x = x;
-  }
-
-  set y(y) {
-    this._y = y;
-    this.sprite.y = y;
-  }
 
   onInit(){
 
   }
   async register(room: Room) {
     this.textures = await Promise.all(
-      this.texturesSrcs.map((src) => Assets.load(src))
+      this.texturesSrcs.map((src) => Assets.load(this.texturePath+src))
     );
     const texture = this.textures[0];
     this.sprite = new Sprite(texture);

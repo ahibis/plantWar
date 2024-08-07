@@ -6,7 +6,9 @@ export default class Room{
   container = new Container();
   updatableObjects: Object[] = [];
   registerUpdatableObject(object: Object){
-    this.updatableObjects.push(object);
+    console.log(object,1)
+    this.updatableObjects = [...this.updatableObjects, object];
+    console.log(this)
   }
   removeUpdatableObject(object: Object){
     const index = this.updatableObjects.indexOf(object);
@@ -26,6 +28,8 @@ export default class Room{
     this.app.stage.addChild(this.container);
     this.app.ticker.deltaMS = 1000 / 60;
     this.app.ticker.add((delta) => {
+      // console.log(this.updatableObjects)
+
       this.updatableObjects.forEach((object) => {
         object.onUpdate();
       })
