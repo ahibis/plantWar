@@ -29,7 +29,7 @@ export default class Room {
     this.app.ticker.deltaMS = 1000 / 60;
     this.app.ticker.add(() => {
       this.updatableObjects.forEach((object) => {
-        object.onUpdate();
+        object.onSelected();
       });
     });
   }

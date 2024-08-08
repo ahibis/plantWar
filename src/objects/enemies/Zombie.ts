@@ -11,7 +11,7 @@ export default class Zombie extends AnimatedObject {
     this.animatedSprite.play();
     this.animatedSprite.animationSpeed = 0.1;
   }
-  onUpdate() {
+  onSelected() {
     this.sprite.x -= 0.5;
   }
 }

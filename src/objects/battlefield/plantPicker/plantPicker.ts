@@ -6,9 +6,9 @@ export default class PlantPicker extends ObjectGroup{
   slots: Slot[] = []
   slotActivatedId = -1;
 
-  chooseSlot(slotId:number){
+  selectSlot(slotId:number){
     this.slotActivatedId = slotId;
-    this.slots.forEach(slot => slot.onUpdate());
+    this.slots.forEach(slot => slot.onSelected());
   }
   constructor(room: Room, x=0, y=0) {
     super(room,x, y);

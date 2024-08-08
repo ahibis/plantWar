@@ -67,7 +67,7 @@ export default class GameObject {
   _y = 0;
 
   async loadSprite() {
-    this.sprite = new Sprite();
+    this.sprite = new Sprite(await this.getTexture(this.textureMode));
   }
   async register(room: Room) {
     this.room = room;
@@ -81,7 +81,7 @@ export default class GameObject {
 
   onInit() {}
   beforeInit() {}
-  onUpdate() {}
+  onSelected() {}
 
   constructor(x = 0, y = 0) {
     this._x = x;

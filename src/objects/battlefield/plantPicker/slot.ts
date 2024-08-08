@@ -15,8 +15,8 @@ export default class Slot extends GameObject {
   texturePath = "/ui/slot/";
   slotId = 0;
   plantPicker: PlantPicker;
-
-  onUpdate() {
+  
+  onSelected() {
     if (this.slotId == this.plantPicker.slotActivatedId) {
       return (this.textureMode = "activated");
     }
@@ -24,11 +24,12 @@ export default class Slot extends GameObject {
   }
   beforeInit(): void {
     this.textureMode = "base";
+  }
+  onInit(): void {
     const { sprite, plantPicker } = this;
-
     sprite.zIndex = 0;
     sprite.interactive = true;
-    sprite.onclick = () => plantPicker.chooseSlot(this.slotId);
+    sprite.onclick = () => plantPicker.selectSlot(this.slotId);
   }
   constructor(plantPicker: PlantPicker, x = 0, y = 0) {
     super(x, y);
