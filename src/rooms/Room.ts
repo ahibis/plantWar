@@ -1,19 +1,19 @@
 import { Application, Container } from "pixi.js";
-import Object from "../objects/Object";
 import ObjectGroup from "@/objects/ObjectGroup";
+import GameObject from "@/objects/GameObject";
 export default class Room {
   app: Application;
-  objects: Object[] = [];
+  objects: GameObject[] = [];
   container = new Container();
-  updatableObjects: Object[] = [];
-  registerUpdatableObject(object: Object) {
+  updatableObjects: GameObject[] = [];
+  registerUpdatableObject(object: GameObject) {
     this.updatableObjects.push(object);
   }
-  removeUpdatableObject(object: Object) {
+  removeUpdatableObject(object: GameObject) {
     const index = this.updatableObjects.indexOf(object);
     if (index !== -1) this.updatableObjects.splice(index, 1);
   }
-  async addObject(object: Object) {
+  async addObject(object: GameObject) {
     await object.register(this);
     this.objects.push(object);
     this.container.addChild(object.sprite);
