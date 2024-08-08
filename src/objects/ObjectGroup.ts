@@ -1,11 +1,11 @@
-import Object from '@/objects/Object';
+import GameObject from '@/objects/GameObject';
 import Room from '@/rooms/Room';
 import { Container } from 'pixi.js';
 export default class ObjectGroup{
   container = new Container();
-  objects: Object[] = [];
+  objects: GameObject[] = [];
   room: Room;
-  async addObject(object: Object){
+  async addObject(object: GameObject){
     await object.register(this.room);
     this.objects.push(object);
     this.container.addChild(object.sprite);

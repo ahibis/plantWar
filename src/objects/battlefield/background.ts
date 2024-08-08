@@ -1,6 +1,6 @@
-import Object from "../Object";
+import GameObject from "../GameObject";
 
-export default class Background extends Object {
+export default class Background extends GameObject {
   textures = {
     base: {
       src: "background.png",

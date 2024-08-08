@@ -1,7 +1,8 @@
+import GameObject from "@/objects/GameObject";
 import PlantPicker from "@/objects/battlefield/plantPicker/PlantPicker";
-import Object from "@/objects/Object";
 
-export default class Slot extends Object {
+
+export default class Slot extends GameObject {
   id = "slot";
   textures = {
     base: {

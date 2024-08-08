@@ -1,4 +1,4 @@
-import { AnimatedSprite, Assets, Sprite, Texture } from "pixi.js";
+import { Assets, Sprite, Texture } from "pixi.js";
 import Room from "../rooms/Room";
 
 type TextureObj = {
@@ -9,10 +9,9 @@ type TextureObj = {
 type Textures = {
   [key: string]: TextureObj;
 };
-export default class Object {
+export default class GameObject {
   static globalSprite = new Sprite();
-  sprite: Sprite | AnimatedSprite = Object.globalSprite;
-  animated = false;
+  sprite: Sprite = GameObject.globalSprite;
   room: Room | undefined = undefined;
   _updatable = false;
   id = "none";
@@ -22,9 +21,7 @@ export default class Object {
   get chosenTexture() {
     return this._chosenTexture;
   }
-  get animatedSprite() {
-    return this.sprite as AnimatedSprite;
-  }
+
   async getTexture(texture: string) {
     const textureObj = this.textures[texture];
     if (!textureObj) return;
@@ -33,34 +30,17 @@ export default class Object {
       this.texturePath + localPath + textureObj.src
     )) as Texture;
   }
-  async getTextures(texture: string) {
-    const textureObj = this.textures[texture];
-    if (!textureObj) return [];
-    const localPath = textureObj.path || "";
-    if (!textureObj.srcs) return [];
-    return (await Promise.all(
-      textureObj.srcs.map((src) =>
-        Assets.load(this.texturePath + localPath + src)
-      )
-    )) as Texture[];
-  }
-  async setChosenTexture(texture: string) {
-    if (this.chosenTexture == texture) return;
-    this._chosenTexture = texture;
 
-    if (this.animated) {
-      const sprite = this.sprite as AnimatedSprite;
-      sprite.textures = await this.getTextures(texture);
-      console.log(sprite);
-      // sprite.play();
-      return;
-    }
+  async setChosenTexture(texture: string) {
+    this._chosenTexture = texture;
     const textureOne = await this.getTexture(texture);
     if (textureOne) {
       this.sprite.texture = textureOne;
     }
   }
+
   set chosenTexture(texture: string) {
+    if(texture == this.chosenTexture) return;
     this.setChosenTexture(texture);
   }
 
@@ -77,34 +57,33 @@ export default class Object {
     }
     this.room.removeUpdatableObject(this);
   }
-  onUpdate() {}
 
-  async addObject(object: Object) {
+  async addObject(object: GameObject) {
     if (!this.room) return;
     await object.register(this.room);
     if (!object.sprite) return;
     this.sprite.addChild(object.sprite);
   }
 
-  onInit() {}
-  beforeInit() {}
   _x = 0;
   _y = 0;
 
+  async loadSprite() {
+    this.sprite = new Sprite();
+  }
   async register(room: Room) {
     this.room = room;
     await this.beforeInit();
-    if (this.animated) {
-      this.sprite = new AnimatedSprite(
-        await this.getTextures(this.chosenTexture)
-      );
-    } else {
-      this.sprite = new Sprite();
-    }
+    await this.loadSprite();
+
     this.sprite.x = this._x;
     this.sprite.y = this._y;
     this.onInit();
   }
+
+  onInit() {}
+  beforeInit() {}
+  onUpdate() {}
 
   constructor(x = 0, y = 0) {
     this._x = x;
