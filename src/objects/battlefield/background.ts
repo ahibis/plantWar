@@ -8,7 +8,7 @@ export default class Background extends GameObject {
   };
   texturePath = "/ui/background/";
   onInit(): void {
-    this.chosenTexture = "base";
+    this.textureMode = "base";
     if (this.sprite) {
       this.sprite.zIndex = -10;
     }

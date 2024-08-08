@@ -18,12 +18,12 @@ export default class Slot extends GameObject {
 
   onUpdate() {
     if (this.slotId == this.plantPicker.slotActivatedId) {
-      return (this.chosenTexture = "activated");
+      return (this.textureMode = "activated");
     }
-    this.chosenTexture = "base";
+    this.textureMode = "base";
   }
-  onInit(): void {
-    this.chosenTexture = "base";
+  beforeInit(): void {
+    this.textureMode = "base";
     const { sprite, plantPicker } = this;
 
     sprite.zIndex = 0;

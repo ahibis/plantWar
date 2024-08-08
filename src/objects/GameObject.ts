@@ -17,11 +17,14 @@ export default class GameObject {
   id = "none";
   textures: Textures = {};
   texturePath = "";
-  _chosenTexture = "";
-  get chosenTexture() {
-    return this._chosenTexture;
+  _textureMode = "";
+  get textureMode() {
+    return this._textureMode;
   }
-
+  set textureMode(texture: string) {
+    if (texture == this._textureMode) return;
+    this.setTextureMode(texture);
+  }
   async getTexture(texture: string) {
     const textureObj = this.textures[texture];
     if (!textureObj) return;
@@ -31,17 +34,12 @@ export default class GameObject {
     )) as Texture;
   }
 
-  async setChosenTexture(texture: string) {
-    this._chosenTexture = texture;
+  async setTextureMode(texture: string) {
+    this._textureMode = texture;
     const textureOne = await this.getTexture(texture);
     if (textureOne) {
       this.sprite.texture = textureOne;
     }
-  }
-
-  set chosenTexture(texture: string) {
-    if(texture == this.chosenTexture) return;
-    this.setChosenTexture(texture);
   }
 
   get updatable() {

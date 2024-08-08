@@ -7,7 +7,7 @@ export default class Zombie extends AnimatedObject {
     this.updatable = true;
   }
   async onInit() {
-    await this.setChosenTexture("attack");
+    await this.setTextureMode("attack");
     this.animatedSprite.play();
     this.animatedSprite.animationSpeed = 0.1;
   }

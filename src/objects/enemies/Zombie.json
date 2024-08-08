@@ -16,7 +16,7 @@
     }
   },
   "texturePath": "/enemies/zombie/",
-  "chosenTexture": "walk",
+  "textureMode": "walk",
   "hp": 10,
   "speed": 0.5,
   "damage": 1
