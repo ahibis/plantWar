@@ -13,7 +13,6 @@ export default class GameObject {
   static globalSprite = new Sprite();
   sprite: Sprite = GameObject.globalSprite;
   room: Room | undefined = undefined;
-  _updatable = false;
   id = "none";
   textures: Textures = {};
   texturePath = "";
@@ -44,20 +43,6 @@ export default class GameObject {
     }
   }
 
-  get updatable() {
-    return this._updatable;
-  }
-  set updatable(value: boolean) {
-    if (value == this._updatable) return;
-    if (!this.room) return;
-    this._updatable = value;
-    if (value === true) {
-      this.room.registerUpdatableObject(this);
-      return;
-    }
-    this.room.removeUpdatableObject(this);
-  }
-
   async addObject(object: GameObject) {
     if (!this.room) return;
     await object.register(this.room);
@@ -84,7 +69,6 @@ export default class GameObject {
 
   onInit() {}
   beforeInit() {}
-  onSelected() {}
 
   constructor(x = 0, y = 0) {
     this._x = x;
