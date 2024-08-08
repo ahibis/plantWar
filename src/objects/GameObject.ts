@@ -18,11 +18,11 @@ export default class GameObject {
   textures: Textures = {};
   texturePath = "";
   _textureMode = "";
+  _spriteInitialized = false;
   get textureMode() {
     return this._textureMode;
   }
   set textureMode(texture: string) {
-    if (texture == this._textureMode) return;
     this.setTextureMode(texture);
   }
   async getTexture(texture: string) {
@@ -35,7 +35,9 @@ export default class GameObject {
   }
 
   async setTextureMode(texture: string) {
+    if (texture == this._textureMode) return;
     this._textureMode = texture;
+    if(!this._spriteInitialized) return;
     const textureOne = await this.getTexture(texture);
     if (textureOne) {
       this.sprite.texture = textureOne;
@@ -68,6 +70,7 @@ export default class GameObject {
 
   async loadSprite() {
     this.sprite = new Sprite(await this.getTexture(this.textureMode));
+    this._spriteInitialized = true;
   }
   async register(room: Room) {
     this.room = room;

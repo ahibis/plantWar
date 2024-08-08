@@ -19,11 +19,14 @@ export default class AnimatedObject extends GameObject {
   }
 
   async setTextureMode(texture: string) {
+    if (texture == this._textureMode) return;
     this._textureMode = texture;
+    if(!this._spriteInitialized) return;
     this.animatedSprite.textures = await this.getTextures(texture);
   }
   async loadSprite() {
     const textures = await this.getTextures(this.textureMode)
     this.sprite = new AnimatedSprite(textures);
+    this._spriteInitialized = true;
   }
 }
