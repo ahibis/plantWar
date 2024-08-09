@@ -1,5 +1,5 @@
 import GameObject from "@/objects/GameObject";
-import StopButtonData from "@/objects/ui/Controller/StopButtonData.json";
+import StopButtonData from "./StopButtonData.json";
 
 export default class StopButton extends GameObject {
 
@@ -10,5 +10,10 @@ export default class StopButton extends GameObject {
     const {room} = this;
     if(!room) return;
     room.freezed = !room.freezed;
+    if(this.textureMode === "pause"){
+      this.textureMode = "play";
+    }else{
+      this.textureMode = "pause";
+    }
   }
 }

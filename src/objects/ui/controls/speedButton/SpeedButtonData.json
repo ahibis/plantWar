@@ -1,0 +1,13 @@
+{
+  "textures": {
+    "speed1": {
+      "src" : "speed1.png"
+    },
+    "speed2": {
+      "src": "speed2.png"
+    }
+  },
+  "texturePath": "/ui/controls/",
+  "textureMode": "speed1",
+  "unfrozen":true
+}

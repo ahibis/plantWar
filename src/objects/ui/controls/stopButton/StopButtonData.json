@@ -8,5 +8,7 @@
     }
   },
   "texturePath": "/ui/controls/",
-  "textureMode": "start"
+  "textureMode": "pause",
+  "x":100,
+  "unfrozen":true
 }
