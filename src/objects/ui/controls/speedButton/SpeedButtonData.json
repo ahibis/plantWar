@@ -8,6 +8,5 @@
     }
   },
   "texturePath": "/ui/controls/",
-  "textureMode": "speed1",
-  "unfrozen":true
+  "textureMode": "speed2"
 }

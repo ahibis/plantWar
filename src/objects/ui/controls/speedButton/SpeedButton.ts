@@ -11,10 +11,10 @@ export default class SpeedButton extends GameObject {
     if(!room) return;
     if(this.textureMode === "speed2"){
       room.fps = 120;
-      this.textureMode = "play";
+      this.textureMode = "speed1";
     }else{
       room.fps = 60;
-      this.textureMode = "stop";
+      this.textureMode = "speed2";
     }
   }
 }
