@@ -23,6 +23,21 @@ export default class GameObject {
   texturePath = "";
   unfrozen = false;
 
+  get x() {
+    return this._x;
+  }
+  set x(x: number) {
+    this._x = x;
+    this.sprite.x = x;
+  }
+  get y() {
+    return this._y;
+  }
+  set y(y: number) {
+    this._y = y;
+    this.sprite.y = y;
+  }
+  
   get freezed() {
     return this._freezed;
   }

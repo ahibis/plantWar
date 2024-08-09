@@ -1,0 +1,12 @@
+{
+  "textures": {
+    "pause": {
+      "src" : "stopButton.png"
+    },
+    "play": {
+      "src": "play.png"
+    }
+  },
+  "texturePath": "/ui/controls/",
+  "textureMode": "start"
+}
