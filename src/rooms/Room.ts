@@ -1,4 +1,4 @@
-import { Application, Container } from "pixi.js";
+import { Application, Container, Ticker } from "pixi.js";
 import ObjectGroup from "@/objects/ObjectGroup";
 import GameObject from "@/objects/GameObject";
 export default class Room {
@@ -7,6 +7,28 @@ export default class Room {
   container = new Container();
   updatableObjects: (GameObject | ObjectGroup)[] = [];
   keyDownObjects: (GameObject | ObjectGroup)[] = [];
+  _intervalId:NodeJS.Timeout|undefined;
+  _fps = 60;
+  _freezed = false;
+
+  get fps() {
+    return this._fps;
+  }
+  set fps(fps: number) {
+    this._fps = fps;
+    clearInterval(this._intervalId);
+    this.registerUpdatableObject();
+  }
+  registerUpdatableObject() {
+    this._intervalId = setInterval(() => {
+      this.updatableObjects.forEach((object) => {
+        if ("onUpdate" in object) {
+          (object.onUpdate as Function)();
+        }
+      });
+    }, 1000/this._fps)
+  }
+
   async addObject(object: GameObject) {
     await object.register(this);
     this.objects.push(object);
@@ -32,14 +54,8 @@ export default class Room {
     this.app = app;
     this.container.sortableChildren = true;
     this.app.stage.addChild(this.container);
-    this.app.ticker.deltaMS = 1000 / 60;
-    this.app.ticker.add((ticker) => {
-      this.updatableObjects.forEach((object) => {
-        if ("onUpdate" in object) {
-          (object.onUpdate as Function)(ticker);
-        }
-      });
-    });
+    this.registerUpdatableObject();
+
     document.addEventListener("keydown", (e) => {
       this.keyDownObjects.forEach((object) => {
         if ("onKeyDown" in object) {

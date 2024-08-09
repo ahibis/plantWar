@@ -10,6 +10,11 @@ export default class PlantPicker extends ObjectGroup{
     this.slotActivatedId = slotId;
     this.slots.forEach(slot => slot.onSelected());
   }
+  onKeyDown(e:KeyboardEvent) {
+    if(Number.parseInt(e.key)) {
+      this.selectSlot(Number.parseInt(e.key)-1);
+    }
+  }
   constructor(room: Room, x=0, y=0) {
     super(room,x, y);
     for(let i = 0; i < 8; i++) {

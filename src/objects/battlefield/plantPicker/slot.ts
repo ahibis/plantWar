@@ -29,7 +29,7 @@ export default class Slot extends GameObject {
     const { sprite, plantPicker } = this;
     sprite.zIndex = 0;
     sprite.interactive = true;
-    sprite.onclick = () => plantPicker.selectSlot(this.slotId);
+    sprite.onpointerdown = () => plantPicker.selectSlot(this.slotId);
   }
   constructor(plantPicker: PlantPicker, x = 0, y = 0) {
     super(x, y);
