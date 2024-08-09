@@ -18,6 +18,17 @@ export default class GameObject {
   texturePath = "";
   _textureMode = "";
   _spriteInitialized = false;
+  _freezed = false;
+  unfrozen = false;
+
+  get freezed() {
+    return this._freezed;
+  }
+
+  set freezed(freezed: boolean) {
+    if(this.unfrozen) return;
+    this._freezed = freezed;
+  }
   get textureMode() {
     return this._textureMode;
   }

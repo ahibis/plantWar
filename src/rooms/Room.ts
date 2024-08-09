@@ -1,4 +1,4 @@
-import { Application, Container, Ticker } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import ObjectGroup from "@/objects/ObjectGroup";
 import GameObject from "@/objects/GameObject";
 import AnimatedObject from "@/objects/AnimatedObject";
@@ -20,12 +20,23 @@ export default class Room {
     this._fps = fps;
     clearInterval(this._intervalId);
     this.registerUpdatableObject();
-    this.AnimatedObjects.map(object => object.animationMultiplier = fps/60);
+    this.AnimatedObjects.forEach(object => object.animationMultiplier = fps/60);
+  }
+  get freezed() {
+    return this._freezed;
+  }
+  set freezed(freezed: boolean) {
+    this._freezed = freezed;
+    if(freezed){
+      this.objects.forEach(object => object.freezed = true);
+      return;
+    }
   }
   registerUpdatableObject() {
     this._intervalId = setInterval(() => {
       this.updatableObjects.forEach((object) => {
         if ("onUpdate" in object) {
+          if(object.freezed)  return;
           (object.onUpdate as Function)();
         }
       });
@@ -66,6 +77,7 @@ export default class Room {
     document.addEventListener("keydown", (e) => {
       this.keyDownObjects.forEach((object) => {
         if ("onKeyDown" in object) {
+          if(object.freezed) return;
           (object.onKeyDown as Function)(e);
         }
       });
