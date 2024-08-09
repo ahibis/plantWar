@@ -73,8 +73,18 @@ export default class GameObject {
     await this.beforeInit();
     await this.loadSprite();
 
-    this.sprite.x = this._x;
-    this.sprite.y = this._y;
+    const sprite = this.sprite;
+    sprite.x = this._x;
+    sprite.y = this._y;
+
+    if("onPointerDown" in this){
+      sprite.interactive = true;
+      sprite.onpointerdown = (ctx) => {
+        if(this._freezed) return;
+        (this.onPointerDown as Function)(ctx);
+      }
+    }
+
     this.onInit();
   }
 
