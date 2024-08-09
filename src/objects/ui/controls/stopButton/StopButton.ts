@@ -6,6 +6,9 @@ export default class StopButton extends GameObject {
   beforeInit() {
     Object.assign(this, StopButtonData);
   }
+  onInit(): void {
+      console.log(this)
+  }
   onPointerDown(){
     const {room} = this;
     if(!room) return;

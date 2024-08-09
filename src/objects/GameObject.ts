@@ -24,14 +24,14 @@ export default class GameObject {
   unfrozen = false;
 
   get x() {
-    return this._x;
+    return this.sprite.x;
   }
   set x(x: number) {
     this._x = x;
     this.sprite.x = x;
   }
   get y() {
-    return this._y;
+    return this.sprite.y;
   }
   set y(y: number) {
     this._y = y;
@@ -82,6 +82,8 @@ export default class GameObject {
   }
   async register(room: Room) {
     this.room = room;
+    this.room.objects.push(this);
+
     await this.beforeInit();
     await this.loadSprite();
 

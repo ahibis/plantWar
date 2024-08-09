@@ -1,7 +1,7 @@
 {
   "textures": {
     "pause": {
-      "src" : "stopButton.png"
+      "src" : "pause.png"
     },
     "play": {
       "src": "play.png"
@@ -9,6 +9,6 @@
   },
   "texturePath": "/ui/controls/",
   "textureMode": "pause",
-  "x":100,
+  "x":70,
   "unfrozen":true
 }

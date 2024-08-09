@@ -5,6 +5,7 @@ import AnimatedObject from "@/objects/AnimatedObject";
 export default class Room {
   app: Application;
   objects: GameObject[] = [];
+  objectGroups: ObjectGroup[] = [];
   container = new Container();
   updatableObjects: (GameObject | ObjectGroup)[] = [];
   keyDownObjects: (GameObject | ObjectGroup)[] = [];
@@ -27,10 +28,8 @@ export default class Room {
   }
   set freezed(freezed: boolean) {
     this._freezed = freezed;
-    if(freezed){
-      this.objects.forEach(object => object.freezed = true);
-      return;
-    }
+    this.objects.forEach(object => object.freezed = freezed);
+    this.objectGroups.forEach(objectGroup => objectGroup.freezed = freezed);
   }
   registerUpdatableObject() {
     this._intervalId = setInterval(() => {
@@ -45,7 +44,7 @@ export default class Room {
 
   async addObject(object: GameObject) {
     await object.register(this);
-    this.objects.push(object);
+    
     if ("onKeyDown" in object) {
       this.keyDownObjects.push(object);
     }
@@ -60,6 +59,7 @@ export default class Room {
   
   addObjectGroup(objectGroup: ObjectGroup) {
     this.container.addChild(objectGroup.container);
+    this.objectGroups.push(objectGroup);
     if ("onKeyDown" in objectGroup) {
       this.keyDownObjects.push(objectGroup);
     }
@@ -76,8 +76,8 @@ export default class Room {
 
     document.addEventListener("keydown", (e) => {
       this.keyDownObjects.forEach((object) => {
+        if(object.freezed) return;
         if ("onKeyDown" in object) {
-          if(object.freezed) return;
           (object.onKeyDown as Function)(e);
         }
       });
