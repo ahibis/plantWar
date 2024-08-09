@@ -1,12 +1,14 @@
 import { Application, Container, Ticker } from "pixi.js";
 import ObjectGroup from "@/objects/ObjectGroup";
 import GameObject from "@/objects/GameObject";
+import AnimatedObject from "@/objects/AnimatedObject";
 export default class Room {
   app: Application;
   objects: GameObject[] = [];
   container = new Container();
   updatableObjects: (GameObject | ObjectGroup)[] = [];
   keyDownObjects: (GameObject | ObjectGroup)[] = [];
+  AnimatedObjects: AnimatedObject[] = [];
   _intervalId:NodeJS.Timeout|undefined;
   _fps = 60;
   _freezed = false;
@@ -18,6 +20,7 @@ export default class Room {
     this._fps = fps;
     clearInterval(this._intervalId);
     this.registerUpdatableObject();
+    this.AnimatedObjects.map(object => object.animationMultiplier = fps/60);
   }
   registerUpdatableObject() {
     this._intervalId = setInterval(() => {
@@ -39,7 +42,11 @@ export default class Room {
       this.updatableObjects.push(object);
     }
     this.container.addChild(object.sprite);
+    if(object instanceof AnimatedObject){
+      this.AnimatedObjects.push(object)
+    }
   }
+  
   addObjectGroup(objectGroup: ObjectGroup) {
     this.container.addChild(objectGroup.container);
     if ("onKeyDown" in objectGroup) {
