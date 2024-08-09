@@ -6,6 +6,7 @@ export default class ObjectGroup{
   objects: GameObject[] = [];
   room: Room;
   freezed = false;
+  
   async addObject(object: GameObject){
     await object.register(this.room);
     this.objects.push(object);

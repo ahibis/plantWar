@@ -10,60 +10,57 @@ type Textures = {
   [key: string]: TextureObj;
 };
 export default class GameObject {
+  _textureMode = "";
+  _spriteInitialized = false;
+  _freezed = false;
+  _x = 0;
+  _y = 0;
   static globalSprite = new Sprite();
   sprite: Sprite = GameObject.globalSprite;
   room: Room | undefined = undefined;
   id = "none";
   textures: Textures = {};
   texturePath = "";
-  _textureMode = "";
-  _spriteInitialized = false;
-  _freezed = false;
   unfrozen = false;
 
   get freezed() {
     return this._freezed;
   }
-
   set freezed(freezed: boolean) {
-    if(this.unfrozen) return;
+    if (this.unfrozen) return;
     this._freezed = freezed;
   }
+
   get textureMode() {
     return this._textureMode;
   }
   set textureMode(texture: string) {
     this.setTextureMode(texture);
   }
-  async getTexture(texture: string) {
-    const textureObj = this.textures[texture];
+
+  async getTexture(textureMode: string) {
+    const textureObj = this.textures[textureMode];
     if (!textureObj) return;
     const localPath = textureObj.path || "";
     return (await Assets.load(
       this.texturePath + localPath + textureObj.src
     )) as Texture;
   }
-
-  async setTextureMode(texture: string) {
-    if (texture == this._textureMode) return;
-    this._textureMode = texture;
-    if(!this._spriteInitialized) return;
-    const textureOne = await this.getTexture(texture);
-    if (textureOne) {
-      this.sprite.texture = textureOne;
+  async setTextureMode(textureMode: string) {
+    if (textureMode == this._textureMode) return;
+    this._textureMode = textureMode;
+    if (!this._spriteInitialized) return;
+    const texture = await this.getTexture(textureMode);
+    if (texture) {
+      this.sprite.texture = texture;
     }
   }
-
   async addObject(object: GameObject) {
     if (!this.room) return;
     await object.register(this.room);
     if (!object.sprite) return;
     this.sprite.addChild(object.sprite);
   }
-
-  _x = 0;
-  _y = 0;
-
   async loadSprite() {
     this.sprite = new Sprite(await this.getTexture(this.textureMode));
     this._spriteInitialized = true;
@@ -77,12 +74,12 @@ export default class GameObject {
     sprite.x = this._x;
     sprite.y = this._y;
 
-    if("onPointerDown" in this){
+    if ("onPointerDown" in this) {
       sprite.interactive = true;
       sprite.onpointerdown = (ctx) => {
-        if(this._freezed) return;
+        if (this._freezed) return;
         (this.onPointerDown as Function)(ctx);
-      }
+      };
     }
 
     this.onInit();

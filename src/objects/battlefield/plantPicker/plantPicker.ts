@@ -19,6 +19,7 @@ export default class PlantPicker extends ObjectGroup{
     super(room,x, y);
     for(let i = 0; i < 8; i++) {
       const slot = new Slot(this, 0, 80*i);
+      this.slots.push(slot);
       slot.slotId = i;
       this.addObject(slot);
      }

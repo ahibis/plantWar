@@ -4,6 +4,7 @@ import GameObject from "./GameObject";
 export default class AnimatedObject extends GameObject {
   _animationSpeed = 0.1;
   _animationMultiplier = 1;
+
   get animatedSprite() {
     return this.sprite as AnimatedSprite;
   }
@@ -21,14 +22,6 @@ export default class AnimatedObject extends GameObject {
     this._animationMultiplier = multiplier;
     this.animatedSprite.animationSpeed = this._animationSpeed * multiplier;
   }
-  async getTexture(texture: string) {
-    const textureObj = this.textures[texture];
-    if (!textureObj) return;
-    const localPath = textureObj.path || "";
-    return (await Assets.load(
-      this.texturePath + localPath + textureObj.src
-    )) as Texture;
-  }
 
   async getTextures(texture: string) {
     const textureObj = this.textures[texture];
@@ -41,7 +34,6 @@ export default class AnimatedObject extends GameObject {
       )
     )) as Texture[];
   }
-
   async setTextureMode(texture: string) {
     if (texture == this._textureMode) return;
     this._textureMode = texture;
