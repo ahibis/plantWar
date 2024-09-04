@@ -2,7 +2,6 @@ import GameObject from "@/objects/GameObject";
 import StopButtonData from "./SpeedButtonData.json";
 
 export default class SpeedButton extends GameObject {
-
   beforeInit() {
     Object.assign(this, StopButtonData);
   }
